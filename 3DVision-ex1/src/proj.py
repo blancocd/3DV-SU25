@@ -115,7 +115,7 @@ def project_points_to_image(points_3d, K, R, t): # (6 Points)
         
     Returns:
         points_2d: Nx2 array of 2D points
-        mask: Boolean array indicating which points are in front of the camera
+        mask: Boolean array indicating which points are in front of the camera AND in image
     """
 
     ### Write your code here
@@ -125,11 +125,14 @@ def project_points_to_image(points_3d, K, R, t): # (6 Points)
     T_world_to_cam[:3, 3] = t
     points_3d_homog_cam = points_3d_homog_world @ T_world_to_cam.T # (N, 4) (4, 4)
 
-    points_infront = points_3d_homog_cam[:, 2] > 0 # N 
-
     points_2d_homog_img = points_3d_homog_cam[:,:3] @ K.T # (N, 3) (3, 3)
     points_2d = dehomogenize(points_2d_homog_img)
-    return points_2d, points_infront
+
+    points_infront = points_3d_homog_cam[:, 2] > 0 # N 
+    points_inimage = (points_2d[:, 0] > 0) & (points_2d[:, 0] < 1) & \
+                    (points_2d[:, 1] > 0) & (points_2d[:, 1] < 1)
+    mask = points_infront & points_inimage
+    return points_2d, mask
 
 
 def orthographic_projection(points_3d, R, t, scale=1.0, image_width=640, image_height=480): # (6 Points)
