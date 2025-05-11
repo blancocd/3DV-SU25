@@ -27,13 +27,26 @@ def look_at(eye, target, up): # (2 Points)
         R: Rotation matrix (world to camera)
         t: Translation vector for extrinsic matrix
     """
-    R = np.eye(3)
-    t = np.zeros((3,))
 
     ### Write your code here
-    # raise NotImplementedError("look_at function not implemented")
+    z_cam = target-eye
+    z_cam /= np.linalg.norm(z_cam)
+    x_cam = np.cross(up, z_cam)
+    x_cam /= np.linalg.norm(x_cam)
+    y_cam = np.cross(z_cam, x_cam)
+    y_cam /= np.linalg.norm(y_cam)
+
+    R_cam_to_world = np.column_stack((x_cam, y_cam, z_cam))
+    t_cam_to_world = eye
+
+    T_cam_to_world = np.eye(4)
+    T_cam_to_world[:3, :3] = R_cam_to_world
+    T_cam_to_world[:3, 3] = t_cam_to_world
     
-    return R, t
+    T_world_to_cam = np.linalg.inv(T_cam_to_world)
+    R_world_to_cam = T_world_to_cam[:3, :3]
+    t_world_to_cam = T_world_to_cam[:3, 3]
+    return R_world_to_cam, t_world_to_cam
 
 
 def homogenize(points): # (1 Points)
@@ -47,15 +60,15 @@ def homogenize(points): # (1 Points)
 
     Args:
         points: Nxn array of points
+        So N is the number of points and n the dimension
         
     Returns:
         points_homogeneous: Nx(n+1) array of homogeneous coordinates
     """
-    points_homogeneous = np.ones((points.shape[0], points.shape[1] + 1)) # dummy
 
     ### Write your code here
-    # raise NotImplementedError("homogenize function not implemented")
-    
+    ones = np.ones((points.shape[0], 1))
+    points_homogeneous = np.hstack((points, ones))
     return points_homogeneous
 
 
@@ -73,13 +86,13 @@ def dehomogenize(points): # (1 Points)
         
     Returns:
         points_2d: Nxn array of 2D points
+        So Nx2 but will do more general case
     """
-    points_2d = np.zeros((points.shape[0], points.shape[1] - 1)) # dummy
 
     ### Write your code here
-    # raise NotImplementedError("dehomogenize function not implemented")
-    
-    return points_2d
+    points_nd_nonhomog = points[:,:-1]
+    points_nd = points_nd_nonhomog / points[:, -1, np.newaxis]
+    return points_nd
 
 def project_points_to_image(points_3d, K, R, t): # (6 Points)
     """
@@ -104,13 +117,19 @@ def project_points_to_image(points_3d, K, R, t): # (6 Points)
         points_2d: Nx2 array of 2D points
         mask: Boolean array indicating which points are in front of the camera
     """
-    points_2d = np.zeros((points_3d.shape[0], 2)) # dummy
-    mask = np.zeros((points_3d.shape[0],), dtype=bool) # dummy
 
     ### Write your code here
-    # raise NotImplementedError("project_points_to_image function not implemented")
+    points_3d_homog_world = homogenize(points_3d) # N, 4
+    T_world_to_cam = np.eye(4)
+    T_world_to_cam[:3, :3] = R
+    T_world_to_cam[:3, 3] = t
+    points_3d_homog_cam = points_3d_homog_world @ T_world_to_cam.T # (N, 4) (4, 4)
 
-    return points_2d, mask
+    points_infront = points_3d_homog_cam[:, 2] > 0 # N 
+
+    points_2d_homog_img = points_3d_homog_cam[:,:3] @ K.T # (N, 3) (3, 3)
+    points_2d = dehomogenize(points_2d_homog_img)
+    return points_2d, points_infront
 
 
 def orthographic_projection(points_3d, R, t, scale=1.0, image_width=640, image_height=480): # (6 Points)
@@ -148,13 +167,24 @@ def orthographic_projection(points_3d, R, t, scale=1.0, image_width=640, image_h
         points_2d: Nx2 array of 2D points
         mask: Boolean array indicating which points are visible in the image
     """
-    points_2d = np.zeros((points_3d.shape[0], 2)) # dummy
-    mask = np.zeros((points_3d.shape[0],), dtype=bool) # dummy
 
     ### Write your code here
-    # raise NotImplementedError("orthographic_projection function not implemented")
+    points_3d_homog_world = homogenize(points_3d) # N, 4
+    T_world_to_cam = np.eye(4)
+    T_world_to_cam[:3, :3] = R
+    T_world_to_cam[:3, 3] = t
+    points_3d_homog_cam = points_3d_homog_world @ T_world_to_cam.T # (N, 4) (4, 4)
+
+    points_infront = points_3d_homog_cam[:, 2] > 0 # N 
+
+    points_2d_img = points_3d_homog_cam[:, :2] * scale
+    points_2d_img[:, 0] += image_width / 2.0
+    points_2d_img[:, 1] += image_height / 2.0
     
-    return points_2d, mask
+    points_inimage = (points_2d_img[:, 0] > 0) & (points_2d_img[:, 0] < image_width) & \
+                     (points_2d_img[:, 1] > 0) & (points_2d_img[:, 1] < image_height)
+    mask = points_inimage & points_infront
+    return points_2d_img, mask
 
 
 def main():
@@ -165,7 +195,7 @@ def main():
     
     points_center = points_3d.mean(axis=0)
     
-    # intrinsicss K
+    # intrinsics K
     image_width, image_height = 640.0, 480.0
     fx, fy = 525.0, 525.0
     cx, cy = image_width/2.0, image_height/2.0
