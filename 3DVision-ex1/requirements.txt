@@ -1,0 +1,14 @@
+einops
+matplotlib
+scipy
+trimesh
+pytest
+tqdm
+scikit-image
+plotly
+numpy
+nbformat
+pandas
+ipykernel
+ipympl
+pyvista
