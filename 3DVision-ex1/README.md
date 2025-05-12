@@ -1,8 +1,8 @@
 # Hands-on AI based 3D Vision - Homework 1
 
 Group Member 1:
-- Name:
-- Matriculation number: 
+- Name: Long Nguyen
+- Matriculation number: 5709676 
 
 Group Member 2: 
 - Name: 
