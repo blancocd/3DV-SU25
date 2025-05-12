@@ -5,8 +5,8 @@ Group Member 1:
 - Matriculation number: 5709676 
 
 Group Member 2: 
-- Name: 
-- Matriculation number:   
+- Name: César Díaz Blanco
+- Matriculation number: 6598477 
 
 # Theoretical exercises (29 Points)
 
