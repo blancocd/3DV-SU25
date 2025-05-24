@@ -1,12 +1,12 @@
 # Hands-on AI based 3D Vision - Homework 2
 
 Group Member 1:
-- Name:
-- Matriculation number: 
+- Name: Long Nguyen
+- Matriculation number: 5709676 
 
 Group Member 2: 
-- Name: 
-- Matriculation number:   
+- Name: César Díaz Blanco
+- Matriculation number: 6598477 
 
 
 # Theoretical Exercises (5 Points)
