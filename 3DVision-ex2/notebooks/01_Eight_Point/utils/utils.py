@@ -72,7 +72,7 @@ def load_scene_params2(scene_id):
     
     return scene_params, img0, img1
 
-def draw_camera_frustum(pl, K, RT, image):
+def draw_camera_frustum(pl, K, RT, image, label=None):
     height, width = image.shape[:2]
     R = RT[:, :3]
     t = RT[:, 3]
@@ -114,6 +114,8 @@ def draw_camera_frustum(pl, K, RT, image):
     pl.add_lines(np.array([cam_center, cam_center + 0.1*R[0, :]]), color='red', width=2)
     pl.add_lines(np.array([cam_center, cam_center + 0.1*R[1, :]]), color='green', width=2)
     pl.add_lines(np.array([cam_center, cam_center + 0.1*R[2, :]]), color='blue', width=2)
+    if label is not None:
+        pl.add_point_labels([cam_center], labels=[label], point_size=0, font_size=20)
 
    
 def plot_epipolar_setup(mesh, img0, img1, scene_params):
@@ -285,8 +287,8 @@ def draw_pair_with_reconstruction(K0, K1, RT1, img0, img1, points0, points1, tri
     colors = colors0 * 0.5 + colors1 * 0.5
     pl = pv.Plotter()
     RT0 = np.hstack((np.eye(3), np.zeros((3, 1))))
-    draw_camera_frustum(pl, K0, RT0, img0)
-    draw_camera_frustum(pl, K1, RT1, img1)
+    draw_camera_frustum(pl, K0, RT0, img0, label='cam0')
+    draw_camera_frustum(pl, K1, RT1, img1, label='cam1')
     pl.add_points(triangulated_points, scalars=colors, opacity=1.0, rgb=True, point_size=size, render_points_as_spheres=True)
     pl.show()
     
