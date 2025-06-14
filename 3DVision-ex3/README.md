@@ -1,8 +1,8 @@
 # Hands-on AI based 3D Vision - Homework 3
 
 Group Member 1:
-- Name:
-- Matriculation number: 
+- Name: César Díaz Blanco
+- Matriculation number: 6598477
 
 Group Member 2: 
 - Name: 
