@@ -22,10 +22,11 @@ def train(train_dataloader, model, opt, epoch, args, writer):
         point_clouds = point_clouds.to(args.device)
         
         # TODO: Forward Pass
-        prediction = ...
+        prediction, r1, r2 = model(point_clouds)
+
             
         # TODO: Compute Loss
-        loss = ...
+        loss = chamfer_distance(prediction, point_clouds)
         
         epoch_loss += loss
 

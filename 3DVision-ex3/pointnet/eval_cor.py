@@ -43,7 +43,9 @@ if __name__ == "__main__":
     test_data = torch.from_numpy((np.load(args.test_data))[:,ind,:])[[args.i,args.j]]
 
     # TODO: Predict point cloud
-    pred_pc = ...
+    with torch.no_grad():
+        pred_pc, _, _ = model(test_data.to(args.device).float())
+
     
     rendering_pc = pred_pc.detach().cpu()
 

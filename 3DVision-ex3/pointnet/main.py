@@ -26,14 +26,16 @@ def train(train_dataloader, model, opt, epoch, args, writer):
         labels = labels.to(args.device).to(torch.long)
 
         # TODO: Forward Pass
-        predictions = ...
+        logits, rot1, rot2 = model(point_clouds)
+        predictions = logits
 
         if (args.task == "seg"):
             labels = labels[:, :args.num_points].reshape([-1])
             predictions = predictions.reshape([-1, args.num_seg_class])
             
         # TODO: Compute Loss
-        loss = ...
+        criterion = torch.nn.CrossEntropyLoss()
+        loss = criterion(predictions, labels)
 
         epoch_loss += loss
 
@@ -64,7 +66,8 @@ def test(test_dataloader, model, epoch, args, writer=None):
 
             # TODO: Forward pass and compute predicted labels
             with torch.no_grad():
-                pred_labels = ...
+                logits, _, _ = model(point_clouds)
+                pred_labels = logits.max(1)[1]
                 
             correct_obj += pred_labels.eq(labels.data).cpu().sum().item()
             num_obj += labels.size()[0]
@@ -86,7 +89,9 @@ def test(test_dataloader, model, epoch, args, writer=None):
 
             # TODO: Forward pass and compute predicted labels
             with torch.no_grad():
-                pred_labels = ...
+                logits, _, _ = model(point_clouds)
+                pred_labels = logits.max(2)[1]  # shape (B, N)
+                pred_labels = pred_labels.reshape(-1)
 
             correct_point += pred_labels.eq(labels.data).cpu().sum().item()
             num_point += labels.view([-1,1]).size()[0]
