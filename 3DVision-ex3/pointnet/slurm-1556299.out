@@ -1,0 +1,7 @@
+/home/nguyen/miniconda3/envs/3DVision-ex3/bin/python3
+Traceback (most recent call last):
+  File "/mnt/beegfs/home/nguyen/3DV-SU25/3DVision-ex3/pointnet/main.py", line 5, in <module>
+    from torch.utils.tensorboard import SummaryWriter
+  File "/home/nguyen/miniconda3/envs/3DVision-ex3/lib/python3.12/site-packages/torch/utils/tensorboard/__init__.py", line 1, in <module>
+    import tensorboard
+ModuleNotFoundError: No module named 'tensorboard'
