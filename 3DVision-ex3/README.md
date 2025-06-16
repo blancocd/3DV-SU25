@@ -235,6 +235,11 @@ python main.py --task "cls" --randomization
 Again report the accuracy on the test set with and without randomization.
 
 
+###### Answer
+
+
+Vanilla Accuracy on test set: 
+
 
 ###### Segmentation (5 Points)
 Train a model for the segmentation task on the training data provided in `data/seg`. The training command is

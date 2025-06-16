@@ -1,0 +1,5 @@
+/home/nguyen/miniconda3/envs/3DVision-ex3/bin/python3
+successfully loaded data
+======== start training for cls task ========
+(check tensorboard for plots of experiment logs/cls_exp)
+0it [00:00, ?it/s]1it [00:07,  7.48s/it]2it [00:14,  7.33s/it]3it [00:22,  7.31s/it]4it [00:29,  7.32s/it]5it [00:36,  7.28s/it]6it [00:43,  7.29s/it]7it [00:51,  7.29s/it]8it [00:58,  7.27s/it]9it [01:05,  7.27s/it]10it [01:12,  7.25s/it]11it [01:20,  7.25s/it]12it [01:27,  7.25s/it]13it [01:34,  7.26s/it]14it [01:41,  7.25s/it]15it [01:49,  7.25s/it]16it [01:56,  7.25s/it]17it [02:03,  7.26s/it]18it [02:10,  7.28s/it]19it [02:18,  7.28s/it]20it [02:25,  7.27s/it]21it [02:32,  7.26s/it]22it [02:39,  7.25s/it]23it [02:47,  7.26s/it]24it [02:54,  7.25s/it]25it [03:01,  7.24s/it]26it [03:08,  7.25s/it]slurmstepd: error: *** JOB 1558635 ON tcml-node5 CANCELLED AT 2025-06-17T09:44:13 ***

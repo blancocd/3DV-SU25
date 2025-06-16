@@ -8,6 +8,8 @@
 #SBATCH --mail-type=FAIL,END
 #SBATCH --mail-user=long.nguyen@student.uni-tuebingen.de
 #SBATCH --mem=64gb
+#SBATCH --output=evaluate_segmentation.txt
+#SBATCH --error=evaluate_segmentation.txt
 
 eval "$(~/miniconda3/bin/conda shell.bash hook)"
 if [ -z "$CONDA_INTERPRETER" ]; then
@@ -16,5 +18,4 @@ fi
 source activate "$CONDA_INTERPRETER"
 which python3
 
-python main.py --task "seg" --randomization --load_checkpoint <checkpoint_name> --eval
-python eval_seg.py --i <object_id> --load_checkpoint <checkpoint_name>
+python main.py --task "seg" --randomization --load_checkpoint best_model --eval

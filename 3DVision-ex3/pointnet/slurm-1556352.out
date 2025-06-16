@@ -1,1 +1,69 @@
 /home/nguyen/miniconda3/envs/3DVision-ex3/bin/python3
+successfully loaded data
+======== start training for cls task ========
+(check tensorboard for plots of experiment logs/cls_exp)
+epoch: 0   train loss: 50.8521   test accuracy: 0.9171
+checkpoint saved at epoch 0
+best model saved at epoch 0
+epoch: 1   train loss: 29.5510   test accuracy: 0.9412
+best model saved at epoch 1
+epoch: 2   train loss: 24.8983   test accuracy: 0.9370
+epoch: 3   train loss: 20.2736   test accuracy: 0.9224
+epoch: 4   train loss: 18.3863   test accuracy: 0.9654
+best model saved at epoch 4
+epoch: 5   train loss: 16.2695   test accuracy: 0.9549
+epoch: 6   train loss: 15.9466   test accuracy: 0.9580
+epoch: 7   train loss: 14.6389   test accuracy: 0.9486
+epoch: 8   train loss: 13.2410   test accuracy: 0.9349
+epoch: 9   train loss: 12.8783   test accuracy: 0.9559
+epoch: 10   train loss: 12.4071   test accuracy: 0.9475
+checkpoint saved at epoch 10
+epoch: 11   train loss: 11.7431   test accuracy: 0.9717
+best model saved at epoch 11
+epoch: 12   train loss: 10.5620   test accuracy: 0.9496
+epoch: 13   train loss: 10.6507   test accuracy: 0.9675
+epoch: 14   train loss: 9.5520   test accuracy: 0.9706
+epoch: 15   train loss: 9.0216   test accuracy: 0.9654
+epoch: 16   train loss: 9.8415   test accuracy: 0.9717
+best model saved at epoch 16
+epoch: 17   train loss: 8.5423   test accuracy: 0.9643
+epoch: 18   train loss: 8.1646   test accuracy: 0.9622
+epoch: 19   train loss: 8.0558   test accuracy: 0.9370
+epoch: 20   train loss: 8.4289   test accuracy: 0.9601
+checkpoint saved at epoch 20
+epoch: 21   train loss: 8.2338   test accuracy: 0.9580
+epoch: 22   train loss: 7.9915   test accuracy: 0.9633
+epoch: 23   train loss: 6.9613   test accuracy: 0.8919
+epoch: 24   train loss: 7.8734   test accuracy: 0.9633
+epoch: 25   train loss: 6.0067   test accuracy: 0.9496
+epoch: 26   train loss: 5.7369   test accuracy: 0.9622
+epoch: 27   train loss: 7.3335   test accuracy: 0.9685
+epoch: 28   train loss: 6.3855   test accuracy: 0.9612
+epoch: 29   train loss: 6.2198   test accuracy: 0.9591
+epoch: 30   train loss: 6.1438   test accuracy: 0.9675
+checkpoint saved at epoch 30
+epoch: 31   train loss: 4.9005   test accuracy: 0.9517
+epoch: 32   train loss: 6.4475   test accuracy: 0.9633
+epoch: 33   train loss: 5.2800   test accuracy: 0.9738
+best model saved at epoch 33
+epoch: 34   train loss: 6.0921   test accuracy: 0.9633
+epoch: 35   train loss: 5.8446   test accuracy: 0.9654
+epoch: 36   train loss: 4.3395   test accuracy: 0.9685
+epoch: 37   train loss: 4.3033   test accuracy: 0.9738
+best model saved at epoch 37
+epoch: 38   train loss: 5.3649   test accuracy: 0.9696
+epoch: 39   train loss: 4.5131   test accuracy: 0.9696
+epoch: 40   train loss: 4.3593   test accuracy: 0.9738
+checkpoint saved at epoch 40
+best model saved at epoch 40
+epoch: 41   train loss: 4.2541   test accuracy: 0.9696
+epoch: 42   train loss: 5.7070   test accuracy: 0.9423
+epoch: 43   train loss: 4.2165   test accuracy: 0.9654
+epoch: 44   train loss: 4.2668   test accuracy: 0.9654
+epoch: 45   train loss: 4.6087   test accuracy: 0.9643
+epoch: 46   train loss: 3.8449   test accuracy: 0.9528
+epoch: 47   train loss: 4.0283   test accuracy: 0.9780
+best model saved at epoch 47
+epoch: 48   train loss: 3.7060   test accuracy: 0.9444
+epoch: 49   train loss: 3.8481   test accuracy: 0.9612
+======== training completes ========

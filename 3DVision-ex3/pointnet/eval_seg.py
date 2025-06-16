@@ -47,7 +47,10 @@ if __name__ == "__main__":
     test_label = test_label.to(args.device)
     
     # TODO: Make prediction
-    pred_label = ...
+    with torch.no_grad():
+        logits, _, _ = model(test_data.to(args.device).float())  # (1, N, num_seg_class)
+        pred_label = logits.argmax(dim=2)  # (1, N)
+
 
     # Visualize Segmentation Result (Pred VS Ground Truth)
     viz_seg(test_data[0], test_label[0], "{}/gt_{}.gif".format(args.output_dir, args.exp_name), args.device)
