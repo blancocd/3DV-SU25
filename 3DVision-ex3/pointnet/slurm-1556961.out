@@ -1,1 +1,5 @@
 /home/nguyen/miniconda3/envs/3DVision-ex3/bin/python3
+successfully loaded data
+======== start training for seg task ========
+(check tensorboard for plots of experiment logs/seg_exp)
+0it [00:00, ?it/s]1it [00:12, 12.38s/it]2it [00:24, 12.26s/it]3it [00:36, 12.26s/it]4it [00:49, 12.27s/it]5it [01:01, 12.27s/it]6it [01:13, 12.24s/it]7it [01:25, 12.25s/it]8it [01:38, 12.23s/it]9it [01:50, 12.24s/it]10it [02:02, 12.22s/it]11it [02:14, 12.23s/it]12it [02:26, 12.23s/it]13it [02:39, 12.22s/it]14it [02:51, 12.22s/it]15it [03:03, 12.23s/it]
