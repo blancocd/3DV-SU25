@@ -7,7 +7,7 @@ from torch.utils.tensorboard import SummaryWriter
 from models import cls_model, seg_model
 from data_loader import get_data_loader
 from utils import randomize, save_checkpoint, create_dir
-
+from tqdm import tqdm
 
 
 
@@ -17,7 +17,7 @@ def train(train_dataloader, model, opt, epoch, args, writer):
     step = epoch*len(train_dataloader)
     epoch_loss = 0
 
-    for i, batch in enumerate(train_dataloader):
+    for i, batch in tqdm(enumerate(train_dataloader)):
         point_clouds, labels = batch
         point_clouds = point_clouds[:, :args.num_points]  # Sample points per object
         point_clouds = point_clouds.to(args.device)
@@ -93,8 +93,9 @@ def test(test_dataloader, model, epoch, args, writer=None):
                 pred_labels = logits.max(2)[1]  # shape (B, N)
                 pred_labels = pred_labels.reshape(-1)
 
-            correct_point += pred_labels.eq(labels.data).cpu().sum().item()
-            num_point += labels.view([-1,1]).size()[0]
+            #correct_point += pred_labels.eq(labels.data).cpu().sum().item()
+            correct_point += pred_labels.eq(labels.reshape(-1)).cpu().sum().item()
+            num_point += labels.reshape([-1,1]).size()[0]
 
         # Compute Accuracy of Test Dataset
         accuracy = correct_point / num_point

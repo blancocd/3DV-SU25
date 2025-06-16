@@ -1,7 +1,0 @@
-/home/nguyen/miniconda3/envs/3DVision-ex3/bin/python3
-Traceback (most recent call last):
-  File "/mnt/beegfs/home/nguyen/3DV-SU25/3DVision-ex3/pointnet/main.py", line 9, in <module>
-    from utils import randomize, save_checkpoint, create_dir
-  File "/mnt/beegfs/home/nguyen/3DV-SU25/3DVision-ex3/pointnet/utils.py", line 10, in <module>
-    import imageio
-ModuleNotFoundError: No module named 'imageio'

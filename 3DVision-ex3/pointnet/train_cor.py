@@ -26,8 +26,7 @@ def train(train_dataloader, model, opt, epoch, args, writer):
 
             
         # TODO: Compute Loss
-        loss = chamfer_distance(prediction, point_clouds)
-        
+        loss, _ = chamfer_distance(prediction, point_clouds)
         epoch_loss += loss
 
         # Backward and Optimize
