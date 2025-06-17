@@ -5,8 +5,8 @@ Group Member 1:
 - Matriculation number: 6598477
 
 Group Member 2: 
-- Name: 
-- Matriculation number:   
+- Name: Long Nguyen
+- Matriculation number: 5709676   
 
 # 🚀 Programming Exercises (80)
 
