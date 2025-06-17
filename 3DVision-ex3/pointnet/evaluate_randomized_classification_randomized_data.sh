@@ -8,8 +8,8 @@
 #SBATCH --mail-type=FAIL,END
 #SBATCH --mail-user=long.nguyen@student.uni-tuebingen.de
 #SBATCH --mem=64gb
-#SBATCH --output=evaluate_classification_randomization.txt
-#SBATCH --error=evaluate_classification_randomization.txt
+#SBATCH --output=evaluate_randomized_classification_randomized_data.txt
+#SBATCH --error=evaluate_randomized_classification_randomized_data.txt
 
 eval "$(~/miniconda3/bin/conda shell.bash hook)"
 if [ -z "$CONDA_INTERPRETER" ]; then
@@ -18,4 +18,4 @@ fi
 source activate "$CONDA_INTERPRETER"
 which python3
 
-python main.py --task "cls" --randomization --vanilla --load_checkpoint vanilla_best_model
+python main.py --task "cls" --randomization --load_checkpoint vanilla_best_model

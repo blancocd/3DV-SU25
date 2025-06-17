@@ -8,8 +8,8 @@
 #SBATCH --mail-type=FAIL,END
 #SBATCH --mail-user=long.nguyen@student.uni-tuebingen.de
 #SBATCH --mem=64gb
-#SBATCH --output=evaluate_classification_randomization.txt
-#SBATCH --error=evaluate_classification_randomization.txt
+#SBATCH --output=evaluate_randomized_classification_normal_data.txt
+#SBATCH --error=evaluate_randomized_classification_normal_data.txt
 
 eval "$(~/miniconda3/bin/conda shell.bash hook)"
 if [ -z "$CONDA_INTERPRETER" ]; then
