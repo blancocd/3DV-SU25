@@ -18,4 +18,15 @@ fi
 source activate "$CONDA_INTERPRETER"
 which python3
 
-python eval_seg.py --i 0 --load_checkpoint best_model
+python eval_seg.py --i 0 --load_checkpoint best_model --exp_name 0
+
+python eval_seg.py --i 1 --load_checkpoint best_model --exp_name 1
+
+
+python eval_seg.py --i 2 --load_checkpoint best_model --exp_name 2
+
+
+python eval_seg.py --i 3 --load_checkpoint best_model --exp_name 3
+
+
+python eval_seg.py --i 4 --load_checkpoint best_model --exp_name 4

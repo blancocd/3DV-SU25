@@ -265,7 +265,7 @@ Visualizations will be written to the subdirectory `output`.
 
 Accuracy: 86%
 
-See ![](pointnet/output/pred_exp.gif)
+See ![](pointnet/output/pred_exp_0.gif)
 
 ###### Correspondences (5 Points)
 Train a model that finds dense correspondences between two chairs via
