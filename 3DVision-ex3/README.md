@@ -278,6 +278,8 @@ python eval_cor.py --load_checkpoint <checkpoint_name> --i <obj1_id> --j <obj2_i
 
 ###### Answer
 
+Training took too long. Please see the log at `pointnet/train_correspondence.txt`
+
 ## Submission Policy
 
 We expect a `group_${group_number}.zip` file with all the codebase and the pdf containing the answers to the theoretical part inside.
