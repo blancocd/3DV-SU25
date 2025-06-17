@@ -240,11 +240,9 @@ Again report the accuracy on the test set with and without randomization.
 
 Vanilla accuracy on test set: Around 95%
 
-Vanilla accuracy on randomized test set: Around 91%
+Vanilla accuracy on randomized test set: Around 91% 
 
-Randomized model on test set: 
-
-Randomized model on randomized test set: 
+Randomized model on randomized test set: Around 92-93%
 
 ###### Segmentation (5 Points)
 Train a model for the segmentation task on the training data provided in `data/seg`. The training command is
