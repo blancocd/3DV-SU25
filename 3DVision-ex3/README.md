@@ -265,6 +265,8 @@ Visualizations will be written to the subdirectory `output`.
 
 Accuracy: 86%
 
+See ![](pointnet/output/pred_exp.gif)
+
 ###### Correspondences (5 Points)
 Train a model that finds dense correspondences between two chairs via
 ```
@@ -277,8 +279,6 @@ python eval_cor.py --load_checkpoint <checkpoint_name> --i <obj1_id> --j <obj2_i
 ---
 
 ###### Answer
-
-See ![](pointnet/output/pred_exp.gif)
 
 ## Submission Policy
 
