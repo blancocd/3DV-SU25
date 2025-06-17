@@ -177,6 +177,9 @@ Now it’s time to step into **deep learning for geometry**. You’ll work with 
 > Note: The base environment for this homework should work with MVSNet flawlessly.
 ---
 
+### Answers
+
+Please see mvsnet001_l3.ply and mvsnet004_l3.ply
 
 ### 🌟 Bonus Points Opportunity: Your Own MVSNet Demo! (10 Bonus Points)
 
