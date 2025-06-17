@@ -238,8 +238,13 @@ Again report the accuracy on the test set with and without randomization.
 ###### Answer
 
 
-Vanilla Accuracy on test set: 
+Vanilla accuracy on test set: Around 95%
 
+Vanilla accuracy on randomized test set: Around 91%
+
+Randomized model on test set: 
+
+Randomized model on randomized test set: 
 
 ###### Segmentation (5 Points)
 Train a model for the segmentation task on the training data provided in `data/seg`. The training command is
@@ -256,6 +261,10 @@ python eval_seg.py --i <object_id> --load_checkpoint <checkpoint_name>
 ```
 Visualizations will be written to the subdirectory `output`.
 
+###### Answer
+
+Accuracy: 86%
+
 ###### Correspondences (5 Points)
 Train a model that finds dense correspondences between two chairs via
 ```
@@ -265,8 +274,11 @@ Show the results for different epochs (i.e. show the correspondences obtained fr
 ```
 python eval_cor.py --load_checkpoint <checkpoint_name> --i <obj1_id> --j <obj2_id>
 ```
-
 ---
+
+###### Answer
+
+See ![](pointnet/output/pred_exp.gif)
 
 ## Submission Policy
 

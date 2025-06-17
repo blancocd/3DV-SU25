@@ -8,15 +8,14 @@ from models import cor_model
 from data_loader import get_data_loader
 from utils import save_checkpoint, create_dir
 from pytorch3d.loss import chamfer_distance
-
-
+from tqdm import tqdm
 
 def train(train_dataloader, model, opt, epoch, args, writer):
     model.train()
     step = epoch*len(train_dataloader)
     epoch_loss = 0
 
-    for i, batch in enumerate(train_dataloader):
+    for i, batch in tqdm(enumerate(train_dataloader)):
         point_clouds = batch
         point_clouds = point_clouds[:, :args.num_points]  # Sample points per object
         point_clouds = point_clouds.to(args.device)
