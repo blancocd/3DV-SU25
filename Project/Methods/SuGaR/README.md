@@ -2,6 +2,10 @@
 
 # SuGaR: Surface-Aligned Gaussian Splatting for Efficient 3D Mesh Reconstruction and High-Quality Mesh Rendering
 
+> **_Fork for clusters or cases where a system-wide CUDA Toolkit installation is not possible_**
+
+> This repo and 3DGS original repo assume that the user has access to a a system-wide CUDA Toolkit installation. This is not possible, for instance, in clusters. Thus we have changed the installation instructions to reflect this.
+
 <font size="4">
 CVPR 2024
 </font>
@@ -148,10 +152,7 @@ Below is another example of a scene showing a robot with a black and specular ma
 The software requirements are the following:
 - Conda (recommended for easy setup)
 - C++ Compiler for PyTorch extensions
-- CUDA toolkit 11.8 for PyTorch extensions
 - C++ Compiler and CUDA SDK must be compatible
-
-Please refer to the original <a href="https://github.com/graphdeco-inria/gaussian-splatting">3D Gaussian Splatting repository</a> for more details about requirements.
 
 ### 1. Clone the repository
 
@@ -171,43 +172,21 @@ git clone git@github.com:Anttwo/SuGaR.git --recursive
 
 ### 2. Creating the Conda environment
 
-To create and activate the Conda environment with all the required packages, go inside the `SuGaR/` directory and run the following command:
-
-```shell
-python install.py
-conda activate sugar
-```
-
-This script will automatically create a Conda environment named `sugar` and install all the required packages. It will also automatically install the <a href="https://github.com/graphdeco-inria/gaussian-splatting">3D Gaussian Splatting</a> rasterizer as well as the <a href="https://nvlabs.github.io/nvdiffrast/">Nvdiffrast</a> library for faster mesh rasterization.
-
-If you encounter any issues with the installation, you can try to follow the detailed instructions below to install the required packages manually.
-
-<details>
-<summary><span style="font-weight: bold;">
-Detailed instructions for manual installation
-</span></summary>
-
 #### a) Install the required Python packages
-To install the required Python packages and activate the environment, go inside the `SuGaR/` directory and run the following commands:
-
-```shell
-conda env create -f environment.yml
-conda activate sugar
-```
-
-If this command fails to create a working environment, you can try to install the required packages manually by running the following commands:
+Install the required packages manually by running the following commands:
 ```shell
 conda create --name sugar -y python=3.9
 conda activate sugar
-conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.8 -c pytorch -c nvidia
-conda install -c fvcore -c iopath -c conda-forge fvcore iopath
-conda install pytorch3d==0.7.4 -c pytorch3d
-conda install -c plotly plotly
-conda install -c conda-forge rich
-conda install -c conda-forge plyfile==0.8.1
-conda install -c conda-forge jupyterlab
-conda install -c conda-forge nodejs
-conda install -c conda-forge ipywidgets
+conda install -c "nvidia/label/cuda-11.8.0" cuda-toolkit -y
+conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.8 -c pytorch -c nvidia -y
+conda install -c fvcore -c iopath -c conda-forge fvcore iopath -y
+conda install pytorch3d==0.7.4 -c pytorch3d -y
+conda install -c plotly plotly -y
+conda install -c conda-forge rich -y
+conda install -c conda-forge plyfile==0.8.1 -y
+conda install -c conda-forge jupyterlab -y
+conda install -c conda-forge nodejs -y
+conda install -c conda-forge ipywidgets -y
 pip install open3d
 pip install --upgrade PyMCubes
 ```
