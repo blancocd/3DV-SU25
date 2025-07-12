@@ -16,6 +16,11 @@
   <div align="center"></div>
 </p>
 
+> **_Fork for clusters or cases where a system-wide CUDA Toolkit installation is not possible_**
+
+> This repo and 3DGS original repo assume that the user has access to a a system-wide CUDA Toolkit installation. This is not possible, for instance, in clusters. Thus we have changed the installation instructions to reflect this.
+
+> Since this repo uses CUDA 11.3 for pytorch and compiling the custom operators gcc may need to be downgraded too and some environment variables set to find the correct linkers and for Cmake to work
 
 <p align="center">
   <a href="">
@@ -34,31 +39,39 @@ Gaussian Opacity Fields (GOF) enables geometry extraction with 3D Gaussians dire
 * **[2024.06.10]**: 🔥 Improve the training speed by 2x with [merged operations](https://github.com/autonomousvision/gaussian-opacity-fields/pull/58). 6 scenes in TNT dataset can be trained in ~24 mins and the bicycle scene in the Mip-NeRF 360 dataset can be trained in ~45 mins. Please pull the latest code and reinstall with `pip install submodules/diff-gaussian-rasterization` to use it.
 
 # Installation
-Clone the repository and create an anaconda environment using
+Create an anaconda environment using with compatible gcc compiler as follows:
 ```
-git clone git@github.com:autonomousvision/gaussian-opacity-fields.git
-cd gaussian-opacity-fields
-
 conda create -y -n gof python=3.8
 conda activate gof
+conda install 'gxx[version=">=5,<10.2.1"]' -c conda-forge -y
+conda install --channel=conda-forge libxcrypt -y
 
 pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 -f https://download.pytorch.org/whl/torch_stable.html
-conda install cudatoolkit-dev=11.3 -c conda-forge
+conda install cudatoolkit-dev=11.3 -c conda-forge -y
 
 pip install -r requirements.txt
 
+# --- Pip Installs with Linker Flag ---
+# You may need to set LDFLAGS if there are linker issues
+export LDFLAGS="-L/usr/lib/x86_64-linux-gnu"
 pip install submodules/diff-gaussian-rasterization
 pip install submodules/simple-knn/
+unset LDFLAGS # Unset immediately after use
 
-# tetra-nerf for triangulation
+# --- CMake Build ---
 cd submodules/tetra-triangulation
-conda install cmake
-conda install conda-forge::gmp
-conda install conda-forge::cgal
+conda install cmake -y
+conda install conda-forge::gmp -y
+conda install conda-forge::cgal -y
+
+export CC=$CONDA_PREFIX/bin/gcc
+export CXX=$CONDA_PREFIX/bin/g++
+export CPATH=$CONDA_PREFIX/include:$CPATH
+
+# If cmake fails for whatever reason one should rm before trying again:
+# rm -rf CMakeCache.txt CMakeFiles/
 cmake .
-# you can specify your own cuda path
-# export CPATH=/usr/local/cuda-11.3/targets/x86_64-linux/include:$CPATH
-make 
+make
 pip install -e .
 ```
 

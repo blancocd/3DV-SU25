@@ -54,9 +54,10 @@ python view.py -s <path to COLMAP or NeRF Synthetic dataset> -m <path to trained
 # download
 git clone https://github.com/hbb1/2d-gaussian-splatting.git --recursive
 
-# create an environment in case cuda-toolkit is not installed
+# create an environment
 conda env create --file environment.yml
 conda activate surfel_splatting
+# in case cuda-toolkit is not installed
 conda install -c "nvidia/label/cuda-11.8.0" cuda-toolkit -y
 pip install -e submodules/diff-surfel-rasterization
 pip install -e submodules/simple-knn
