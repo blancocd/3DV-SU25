@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --job-name=2dgs
+#SBATCH --job-name=2dgs-dtu
 #SBATCH --cpus-per-task=4
 #SBATCH --partition=day
 #SBATCH --mem-per-cpu=3G
 #SBATCH --gres=gpu:2080ti:1
-#SBATCH --time=08:00:00
+#SBATCH --time=01:00:00
 #SBATCH --error=/home/stud213/3DV-SU25/Project/slurm/%J.err
 #SBATCH --output=/home/stud213/3DV-SU25/Project/slurm/%J.out
 #SBATCH --mail-type=ALL
@@ -27,3 +27,4 @@ which python
 cd /home/stud213/3DV-SU25/Project/Methods/2d-gaussian-splatting/
 python scripts/dtu_eval.py  --dtu /scratch/$SLURM_JOB_ID/DTU_2DGS   \
                             --DTU_Official /scratch/$SLURM_JOB_ID/DTU \
+                            # --skip_training --skip_rendering
