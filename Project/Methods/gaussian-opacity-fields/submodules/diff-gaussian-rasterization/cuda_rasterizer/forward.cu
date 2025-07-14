@@ -859,6 +859,7 @@ integrateCUDA(
 	if (DEBUG_INTEGRATE && PRINT_INTEGRATE_INFO){
 		if (pix.x == 0 && pix.y == 0){
 			printf("in integrateCUDA, pixf is %.0f %.0f focal_x_y: %.2f %.2f g_toDo: %d p_toDo: %d\n", pixf.x, pixf.y, focal_x, focal_y, toDo, p_toDo);
+			printf("DEBUG INFO: MAX_NUM_CONTRIBUTORS is set to %d\n", MAX_NUM_CONTRIBUTORS);
 		}
 	}
 

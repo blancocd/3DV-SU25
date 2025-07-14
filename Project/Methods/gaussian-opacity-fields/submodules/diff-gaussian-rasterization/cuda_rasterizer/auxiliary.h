@@ -23,7 +23,7 @@
 #define DISTORTION_OFFSET 8
 #define OUTPUT_CHANNELS 9
 
-#define MAX_NUM_CONTRIBUTORS 256
+#define MAX_NUM_CONTRIBUTORS 512
 #define NEAR_PLANE 0.2
 #define FAR_PLANE 100.0
 #define SIGMOID_SCALE 4.0f
@@ -31,10 +31,10 @@
 
 #define DELTA_SCALE 0.2f
 
-#define MAX_NUM_PROJECTED 256
+#define MAX_NUM_PROJECTED 2048
 #define DEBUG 0
-#define DEBUG_INTEGRATE 0
-#define PRINT_INTEGRATE_INFO 0
+#define DEBUG_INTEGRATE 1
+#define PRINT_INTEGRATE_INFO 1
 
 // Spherical harmonics coefficients
 __device__ const float SH_C0 = 0.28209479177387814f;

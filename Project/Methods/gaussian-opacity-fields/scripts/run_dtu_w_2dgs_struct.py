@@ -7,7 +7,8 @@ parser = argparse.ArgumentParser(description="Sequential training and evaluation
 parser.add_argument("--dtu", type=str, required=True, help="Path to the preprocessed DTU dataset for training.")
 parser.add_argument("--output_path", type=str, default="./eval/dtu", help="Path to save model outputs and meshes.")
 parser.add_argument("--skip_training", action="store_true", help="Skip the training stage.")
-parser.add_argument("--skip_meshing", action="store_true", help="Skip the mesh extraction stages.")
+parser.add_argument("--skip_meshing", action="store_true", help="Skip the mesh extraction stage with tetra struct.")
+parser.add_argument("--skip_tsdf_meshing", action="store_true", help="Skip the mesh extraction stage with TSDF algo.")
 parser.add_argument("--skip_evaluation", action="store_true", help="Skip the evaluation stage.")
 
 parser.add_argument("--DTU_Official", type=str, help="Path to the DTU ground truth dataset for evaluation.")
@@ -19,7 +20,7 @@ if not args.skip_evaluation and not args.DTU_Official:
     sys.exit(1)
 
 if not args.skip_training:
-    for scene in dtu_scenes[1:]:
+    for scene in dtu_scenes:
         print(f"Processing Scene: scan{scene}")
         source_path = os.path.join(args.dtu, f"scan{scene}")
         model_output_path = os.path.join(args.output_path, f"scan{scene}")
