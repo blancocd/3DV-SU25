@@ -27,4 +27,4 @@ which python
 cd /home/stud213/3DV-SU25/Project/Methods/2d-gaussian-splatting/
 python scripts/dtu_eval.py  --dtu /scratch/$SLURM_JOB_ID/DTU_2DGS   \
                             --DTU_Official /scratch/$SLURM_JOB_ID/DTU \
-                            # --skip_training --skip_rendering
+                            # --skip_training --skip_rendering --skip_evaluation

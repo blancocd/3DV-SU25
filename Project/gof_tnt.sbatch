@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --job-name=2dgs-tnt
+#SBATCH --job-name=gof-tnt
 #SBATCH --cpus-per-task=4
 #SBATCH --partition=day
 #SBATCH --mem-per-cpu=24G
 #SBATCH --gres=gpu:2080ti:1
-#SBATCH --time=01:00:00
+#SBATCH --time=18:00:00
 #SBATCH --error=/home/stud213/3DV-SU25/Project/slurm/%J.err
 #SBATCH --output=/home/stud213/3DV-SU25/Project/slurm/%J.out
 #SBATCH --mail-type=ALL
@@ -20,11 +20,12 @@ echo "Finished copying gt TNT dataset"
 
 # Activate conda and the respective environment
 source ~/miniconda3/bin/activate
-conda activate surfel_splatting
+conda activate gof
 echo "Finished activating environment"
 which python
 
-cd /home/stud213/3DV-SU25/Project/Methods/2d-gaussian-splatting/
-python scripts/tnt_eval.py  --TNT_data /scratch/$SLURM_JOB_ID/TNT_GOF \
-                            --TNT_GT /scratch/$SLURM_JOB_ID/TNT \
-                            # --skip_training --skip_rendering --skip_evaluation
+cd /home/stud213/3DV-SU25/Project/Methods/gaussian-opacity-fields/
+python scripts/run_tnt_w_2dgs_struct.py --TNT_data /scratch/$SLURM_JOB_ID/TNT_GOF \
+                                        --TNT_GT /scratch/$SLURM_JOB_ID/TNT \
+                                        --skip_meshing --skip_tsdf_meshing --skip_evaluation --skip_evaluation_tsdf
+                                        # --skip_training --skip_meshing --skip_tsdf_meshing --skip_evaluation --skip_evaluation_tsdf
