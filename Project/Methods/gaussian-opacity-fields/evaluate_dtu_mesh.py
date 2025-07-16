@@ -74,7 +74,7 @@ def load_dtu_camera(DTU):
         camtoworlds.append(pose)
     return camtoworlds
 
-def cull_mesh(cameras, mesh):
+def cull_mesh(cameras, mesh, dilation_disk_size, mesh_type):
     
     vertices = mesh.vertices
     
@@ -110,9 +110,9 @@ def cull_mesh(cameras, mesh):
             pix_coords = (pix_coords - 0.5) * 2
             valid = ((pix_coords > -1. ) & (pix_coords < 1.)).all(dim=-1).float()
             
-            # dialate mask similar to unisurf
-            maski = mask[0, :, :].cpu().numpy().astype(np.float32) / 256.
-            maski = torch.from_numpy(binary_dilation(maski, disk(6))).float()[None, None].cuda()
+            # Using 255.0 for normalization to be consistent
+            maski = mask[0, :, :].cpu().numpy().astype(np.float32) / 255.0
+            maski = torch.from_numpy(binary_dilation(maski, disk(dilation_disk_size))).float()[None, None].cuda()
             
             sampled_mask = F.grid_sample(maski, pix_coords[None, None], mode='nearest', padding_mode='zeros', align_corners=True)[0, -1, 0]
 
@@ -129,23 +129,23 @@ def cull_mesh(cameras, mesh):
     mesh.update_vertices(mask)
     mesh.update_faces(face_mask)
     
-    # Taking the biggest connected component
-    # print("Taking the biggest connected component")
-    # components = mesh.split(only_watertight=False)
-    # areas = np.array([c.area for c in components], dtype=np.float32)
-    # mesh_clean = components[areas.argmax()]
+    if mesh_type == 'binary_search':
+        print("Taking the biggest connected component for binary_search mesh")
+        components = mesh.split(only_watertight=False)
+        if components:
+            areas = np.array([c.area for c in components], dtype=np.float32)
+            mesh = components[areas.argmax()]
 
-    # return mesh_clean
     return mesh
 
-def evaluate_mesh(dataset : ModelParams, iteration : int, DTU_PATH : str):
+def evaluate_mesh(dataset : ModelParams, iteration : int, DTU_PATH : str, mesh_type : str):
     
     gaussians = GaussianModel(dataset.sh_degree)
     scene = Scene(dataset, gaussians, load_iteration=iteration, shuffle=False)
     
     train_cameras = scene.getTrainCameras()
     test_cameras = scene.getTestCameras()
-    dtu_cameras = load_dtu_camera(args.DTU)
+    dtu_cameras = load_dtu_camera(DTU_PATH)
     
     gt_points = np.array([cam[:, 3] for cam in dtu_cameras])
     
@@ -163,45 +163,52 @@ def evaluate_mesh(dataset : ModelParams, iteration : int, DTU_PATH : str):
     points = points * scale_gt_points / scale_points
     _, r, t = best_fit_transform(points, gt_points)
     
-    mesh_dir = "tsdf"
-    filename = "tsdf.ply"
+    if mesh_type == 'tsdf':
+        mesh_dir = "tsdf"
+        filename = "tsdf.ply"
+        dilation_size = 24
+    elif mesh_type == 'binary_search':
+        mesh_dir = "fusion"
+        filename = "mesh_binary_search_7.ply"
+        dilation_size = 6
+    else:
+        raise ValueError(f"Unknown mesh type: {mesh_type}")
+
+    # Define a unique output directory for this mesh type's results
+    output_mesh_dir = os.path.join(dataset.model_path, "test/ours_{}".format(iteration), mesh_type + "_eval")
+    makedirs(output_mesh_dir, exist_ok=True)
     
     # load mesh
     mesh_file = os.path.join(dataset.model_path, "test/ours_{}".format(iteration), mesh_dir, filename)
     
     mesh = trimesh.load(mesh_file)
     
-    mesh = cull_mesh(train_cameras, mesh)
+    mesh = cull_mesh(train_cameras, mesh, dilation_size, mesh_type)
     
-    culled_mesh_file = os.path.join(dataset.model_path, "test/ours_{}".format(iteration), mesh_dir, filename.replace(".ply", "_culled.ply"))
+    culled_mesh_file = os.path.join(output_mesh_dir, filename.replace(".ply", "_culled.ply"))
     mesh.export(culled_mesh_file)
     
     # align the mesh
     mesh.vertices = mesh.vertices * scale_gt_points / scale_points
     mesh.vertices = mesh.vertices @ r.T + t
     
-    aligned_mesh_file = os.path.join(dataset.model_path, "test/ours_{}".format(iteration), mesh_dir, filename.replace(".ply", "_aligned.ply"))
+    aligned_mesh_file = os.path.join(output_mesh_dir, filename.replace(".ply", "_aligned.ply"))
     mesh.export(aligned_mesh_file)
         
-    # evaluate
-    out_dir = os.path.join(dataset.model_path, "test/ours_{}".format(iteration), mesh_dir)
-    scan = dataset.model_path.split("/")[-1][4:]
+    scan = dataset.model_path.split("/")[-1].replace("scan", "")
     
-    cmd = f"python dtu_eval/eval.py --data {aligned_mesh_file} --scan {scan} --mode mesh --dataset_dir {DTU_PATH} --vis_out_dir {out_dir}"
+    cmd = f"python dtu_eval/eval.py --data {aligned_mesh_file} --scan {scan} --mode mesh --dataset_dir {DTU_PATH} --vis_out_dir {output_mesh_dir}"
     print(cmd)
     os.system(cmd)
     
 if __name__ == "__main__":
-    # Set up command line argument parser
     parser = ArgumentParser(description="Testing script parameters")
     model = ModelParams(parser, sentinel=True)
     pipeline = PipelineParams(parser)
     parser.add_argument("--iteration", default=30_000, type=int)
-    parser.add_argument("--skip_train", action="store_true")
-    parser.add_argument("--skip_test", action="store_true")
     parser.add_argument("--quiet", action="store_true")
-    parser.add_argument('--scan_id', type=str,  help='scan id of the input mesh')
-    parser.add_argument('--DTU', type=str,  default='dtu_eval/Offical_DTU_Dataset', help='path to the GT DTU point clouds')
+    parser.add_argument('--mesh_type', type=str, default='tsdf', choices=['tsdf', 'binary_search'], help="Type of mesh to evaluate ('tsdf' or 'binary_search')")
+    parser.add_argument('--DTU', type=str,  default='dtu_eval/Official_DTU_Dataset', help='path to the GT DTU point clouds')
     
     args = get_combined_args(parser)
     print("evaluating " + args.model_path)
@@ -211,4 +218,4 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     torch.cuda.set_device(torch.device("cuda:0"))
     
-    evaluate_mesh(model.extract(args), args.iteration, args.DTU)
+    evaluate_mesh(model.extract(args), args.iteration, args.DTU, args.mesh_type)
