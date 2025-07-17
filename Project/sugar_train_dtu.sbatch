@@ -25,5 +25,5 @@ echo "Finished activating environment"
 which python
 
 cd /home/stud213/3DV-SU25/Project/Methods/SuGaR/
-python run_dtu_w_2dgs_struct.py --dtu /scratch/$SLURM_JOB_ID/DTU_2DGS \
-                                --DTU_Official /scratch/$SLURM_JOB_ID/DTU
+python train_tnt_w_2dgs_struct.py   --dtu /scratch/$SLURM_JOB_ID/DTU_2DGS \
+                                    --DTU_Official /scratch/$SLURM_JOB_ID/DTU

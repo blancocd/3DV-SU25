@@ -25,5 +25,5 @@ echo "Finished activating environment"
 which python
 
 cd /home/stud213/3DV-SU25/Project/Methods/SuGaR/
-python run_tnt_w_2dgs_struct.py --TNT_data /scratch/$SLURM_JOB_ID/TNT_GOF \
-                                --TNT_GT /scratch/$SLURM_JOB_ID/TNT
+python train_tnt_w_2dgs_struct.py   --TNT_data /scratch/$SLURM_JOB_ID/TNT_GOF \
+                                    --TNT_GT /scratch/$SLURM_JOB_ID/TNT
