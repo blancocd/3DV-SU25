@@ -48,7 +48,7 @@ def cull_scan(scan, mesh_path, result_mesh_file, instance_dir):
     W, H = 1600, 1200
 
     # load mesh
-    mesh = trimesh.load(mesh_path)
+    mesh = trimesh.load(mesh_path, force=mesh)
     
     # load transformation matrix
 
