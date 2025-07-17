@@ -12,6 +12,8 @@ parser.add_argument("--skip_meshing", action="store_true", help="Skip the mesh e
 parser.add_argument("--skip_tsdf_meshing", action="store_true", help="Skip the mesh extraction stage with TSDF algo.")
 parser.add_argument("--skip_evaluation", action="store_true", help="Skip the evaluation stage.")
 parser.add_argument("--skip_evaluation_tsdf", action="store_true", help="Skip the evaluation stage.")
+parser.add_argument("--skip_evaluation_gs_alignment", action="store_true", help="Skip the evaluation stage.")
+parser.add_argument("--skip_evaluation_tsdf_gs_alignment", action="store_true", help="Skip the evaluation stage.")
 args = parser.parse_args()
 
 if not args.skip_evaluation and not args.DTU_Official:
@@ -74,7 +76,7 @@ if not args.skip_evaluation:
             f"python {script_dir_2dgs}/eval_dtu/evaluate_single_scene.py "
             f"--input_mesh {ply_file} "
             f"--scan_id {scene} "
-            f"--output_dir {script_dir_gof}/tmp/scan{scene} "
+            f"--output_dir {script_dir_gof}/tmp_binary/scan{scene} "
             f"--mask_dir {args.dtu} "
             f"--DTU {args.DTU_Official}"
         )
@@ -92,9 +94,39 @@ if not args.skip_evaluation_tsdf:
             f"python {script_dir_2dgs}/eval_dtu/evaluate_single_scene.py "
             f"--input_mesh {ply_file} "
             f"--scan_id {scene} "
-            f"--output_dir {script_dir_gof}/tmp/scan{scene} "
+            f"--output_dir {script_dir_gof}/tmp_tsdf/scan{scene} "
             f"--mask_dir {args.dtu} "
             f"--DTU {args.DTU_Official}"
+        )
+        print(cmd_eval)
+        os.system(cmd_eval)
+
+if not args.skip_evaluation_gs_alignment:
+    for scene in dtu_scenes:
+        source_path = os.path.join(args.dtu, f"scan{scene}")
+        model_output_path = os.path.join(args.output_path, f"scan{scene}")
+        print(f"Evaluating mesh for scan{scene}")
+        cmd_eval = (
+            f"python evaluate_dtu_mesh.py "
+            f"-s {source_path} "
+            f"-m {model_output_path} --iteration 30000 "
+            f"--DTU {args.DTU_Official} "
+            f"--mesh_type binary_search"
+        )
+        print(cmd_eval)
+        os.system(cmd_eval)
+
+if not args.skip_evaluation_tsdf_gs_alignment:
+    for scene in dtu_scenes:
+        source_path = os.path.join(args.dtu, f"scan{scene}")
+        model_output_path = os.path.join(args.output_path, f"scan{scene}")
+        print(f"Evaluating mesh for scan{scene}")
+        cmd_eval = (
+            f"python evaluate_dtu_mesh.py "
+            f"-s {source_path} "
+            f"-m {model_output_path} --iteration 30000 "
+            f"--DTU {args.DTU_Official} "
+            f"--mesh_type tsdf"
         )
         print(cmd_eval)
         os.system(cmd_eval)

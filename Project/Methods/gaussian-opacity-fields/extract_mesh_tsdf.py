@@ -13,13 +13,20 @@ import open3d as o3d
 import open3d.core as o3c
 import math
         
-def tsdf_fusion(model_path, name, iteration, views, gaussians, pipeline, background, kernel_size):
+def tsdf_fusion(model_path, name, iteration, views, gaussians, pipeline, background, kernel_size, use_gpu_for_o3d = True):
     render_path = os.path.join(model_path, name, "ours_{}".format(iteration), "tsdf")
+    scene_name = os.path.basename(os.path.normpath(model_path))
+    with_or_without_gpu = 'with' if use_gpu_for_o3d else 'without'
+    print(f"Rendering scene {scene_name} {with_or_without_gpu} GPU.\n", flush=True)
 
     makedirs(render_path, exist_ok=True)
-    o3d_device = o3d.core.Device("CUDA:0")
+    o3d_devstr = "CUDA:1" if use_gpu_for_o3d else "CPU:0"
+    o3d_device = o3d.core.Device(o3d_devstr)
     
-    voxel_size = 0.002
+    voxel_size = 0.015 # for TNT's Meetingroom
+    voxel_size = 0.01 # for TNT's Courthouse
+    voxel_size = 0.008 # for TNT's Barn, Caterpillar, Ignatius, Truck
+    voxel_size = 0.002 # default and good for DTU
     alpha_thres=0.5
     
     vbg = o3d.t.geometry.VoxelBlockGrid(
@@ -83,7 +90,7 @@ def tsdf_fusion(model_path, name, iteration, views, gaussians, pipeline, backgro
         o3d.io.write_triangle_mesh(f"{render_path}/tsdf.ply", mesh)
             
             
-def extract_mesh(dataset : ModelParams, iteration : int, pipeline : PipelineParams):
+def extract_mesh(dataset : ModelParams, iteration : int, pipeline : PipelineParams, use_gpu_for_o3d : bool = True):
     with torch.no_grad():
         gaussians = GaussianModel(dataset.sh_degree)
         scene = Scene(dataset, gaussians, load_iteration=iteration, shuffle=False)
@@ -97,7 +104,7 @@ def extract_mesh(dataset : ModelParams, iteration : int, pipeline : PipelinePara
         kernel_size = dataset.kernel_size
         
         cams = train_cameras
-        tsdf_fusion(dataset.model_path, "test", iteration, cams, gaussians, pipeline, background, kernel_size)
+        tsdf_fusion(dataset.model_path, "test", iteration, cams, gaussians, pipeline, background, kernel_size, use_gpu_for_o3d=use_gpu_for_o3d)
 
 if __name__ == "__main__":
     # Set up command line argument parser
@@ -106,6 +113,7 @@ if __name__ == "__main__":
     pipeline = PipelineParams(parser)
     parser.add_argument("--iteration", default=30000, type=int)
     parser.add_argument("--quiet", action="store_true")
+    parser.add_argument("--no_gpu", action="store_true")
     args = get_combined_args(parser)
     print("Rendering " + args.model_path)
     
@@ -114,4 +122,4 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     torch.cuda.set_device(torch.device("cuda:0"))
     
-    extract_mesh(model.extract(args), args.iteration, pipeline.extract(args))
+    extract_mesh(model.extract(args), args.iteration, pipeline.extract(args), use_gpu_for_o3d=not args.no_gpu)

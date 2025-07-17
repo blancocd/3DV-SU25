@@ -74,7 +74,7 @@ def load_dtu_camera(DTU):
         camtoworlds.append(pose)
     return camtoworlds
 
-def cull_mesh(cameras, mesh, dilation_disk_size, mesh_type):
+def cull_mesh(cameras, mesh, dilation_disk_size):
     
     vertices = mesh.vertices
     
@@ -128,14 +128,6 @@ def cull_mesh(cameras, mesh, dilation_disk_size, mesh_type):
     
     mesh.update_vertices(mask)
     mesh.update_faces(face_mask)
-    
-    if mesh_type == 'binary_search':
-        print("Taking the biggest connected component for binary_search mesh")
-        components = mesh.split(only_watertight=False)
-        if components:
-            areas = np.array([c.area for c in components], dtype=np.float32)
-            mesh = components[areas.argmax()]
-
     return mesh
 
 def evaluate_mesh(dataset : ModelParams, iteration : int, DTU_PATH : str, mesh_type : str):
@@ -183,7 +175,7 @@ def evaluate_mesh(dataset : ModelParams, iteration : int, DTU_PATH : str, mesh_t
     
     mesh = trimesh.load(mesh_file)
     
-    mesh = cull_mesh(train_cameras, mesh, dilation_size, mesh_type)
+    mesh = cull_mesh(train_cameras, mesh, dilation_size)
     
     culled_mesh_file = os.path.join(output_mesh_dir, filename.replace(".ply", "_culled.ply"))
     mesh.export(culled_mesh_file)

@@ -178,7 +178,7 @@ Install the required packages manually by running the following commands:
 conda create --name sugar -y python=3.9
 conda activate sugar
 conda install -c "nvidia/label/cuda-11.8.0" cuda-toolkit -y
-conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.8 -c pytorch -c nvidia -y
+conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.8 "numpy<2.0" -c pytorch -c nvidia -y
 conda install -c fvcore -c iopath -c conda-forge fvcore iopath -y
 conda install pytorch3d==0.7.4 -c pytorch3d -y
 conda install -c plotly plotly -y
@@ -196,11 +196,10 @@ pip install --upgrade PyMCubes
 Run the following commands inside the `SuGaR` directory to install the additional Python submodules required for Gaussian Splatting:
 
 ```shell
-cd gaussian_splatting/submodules/diff-gaussian-rasterization/
-pip install -e .
-cd ../simple-knn/
-pip install -e .
-cd ../../../
+# export TORCH_CUDA_ARCH_LIST="7.5" to explicitly tell which GPU it will run on
+pip install -e gaussian_splatting/submodules/diff-gaussian-rasterization
+pip install -e gaussian_splatting/submodules/simple-knn
+unset TORCH_CUDA_ARCH_LIST
 ```
 Please refer to the <a href="https://github.com/graphdeco-inria/gaussian-splatting">3D Gaussian Splatting repository</a> for more details.
 

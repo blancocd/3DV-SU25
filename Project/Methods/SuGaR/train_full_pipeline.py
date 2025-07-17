@@ -122,6 +122,7 @@ if __name__ == "__main__":
             f"CUDA_VISIBLE_DEVICES={args.gpu} python ./gaussian_splatting/train.py \
                 -s {args.scene_path} \
                 -m {gs_checkpoint_dir} \
+                -r 2 \
                 {white_background_str}\
                 --iterations 7_000"
         )
