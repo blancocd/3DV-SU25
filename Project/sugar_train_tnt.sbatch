@@ -1,9 +1,9 @@
 #!/bin/bash
-#SBATCH --job-name=sugar-train-tnt
+#SBATCH --job-name=sugar-train-dtu
 #SBATCH --cpus-per-task=4
 #SBATCH --partition=day
-#SBATCH --mem-per-cpu=24G
-#SBATCH --gres=gpu:2080ti:1
+#SBATCH --mem-per-cpu=8G
+#SBATCH --gres=gpu:A4000:1
 #SBATCH --time=14:00:00
 #SBATCH --error=/home/stud213/3DV-SU25/Project/slurm/%J.err
 #SBATCH --output=/home/stud213/3DV-SU25/Project/slurm/%J.out
@@ -20,10 +20,20 @@ echo "Finished copying gt TNT dataset"
 
 # Activate conda and the respective environment
 source ~/miniconda3/bin/activate
-conda activate sugar
-echo "Finished activating environment"
+
+# Create conda env for A4000
+cd /home/stud213/3DV-SU25/Project/Methods/SuGaR/
+conda activate sugara4000
+python -c "import torch; print(torch.cuda.get_device_capability(0))"
+pip uninstall diff-gaussian-rasterization simple-knn -y
+pip cache purge
+export TORCH_CUDA_ARCH_LIST="8.6"
+pip install -e gaussian_splatting/submodules/diff-gaussian-rasterization
+pip install -e gaussian_splatting/submodules/simple-knn
+unset TORCH_CUDA_ARCH_LIST 
+
+echo "Finished modifying and activating the environment"
 which python
 
-cd /home/stud213/3DV-SU25/Project/Methods/SuGaR/
 python train_tnt_w_2dgs_struct.py   --TNT_data /scratch/$SLURM_JOB_ID/TNT_GOF \
                                     --TNT_GT /scratch/$SLURM_JOB_ID/TNT

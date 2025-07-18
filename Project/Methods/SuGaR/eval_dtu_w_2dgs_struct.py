@@ -11,7 +11,7 @@ script_dir_2dgs = '../2d-gaussian-splatting/scripts/'
 script_dir_sugar = os.path.dirname(os.path.abspath(__file__))
 for scene in dtu_scenes:
     ply_file = f'/home/stud213/3DV-SU25/Project/Methods/SuGaR/output/coarse_mesh/scan{scene}/sugarmesh_3Dgs7000_densityestim02_sdfnorm02_level03_decim1000000.ply'
-    print(f"Evaluating coarse mesh for scan{scene}")
+    print(f"Evaluating coarse mesh for scan{scene}", flush=True)
     cmd_eval = (
         f"python {script_dir_2dgs}/eval_dtu/evaluate_single_scene.py "
         f"--input_mesh {ply_file} "
@@ -20,11 +20,11 @@ for scene in dtu_scenes:
         f"--mask_dir {args.dtu} "
         f"--DTU {args.DTU_Official}"
     )
-    print(cmd_eval)
+    print(cmd_eval, flush=True)
     os.system(cmd_eval)
 
     ply_file = f'/home/stud213/3DV-SU25/Project/Methods/SuGaR/output/refined_mesh/scan{scene}/sugarfine_3Dgs7000_densityestim02_sdfnorm02_level03_decim1000000_normalconsistency01_gaussperface1.obj'
-    print(f"Evaluating refined mesh for scan{scene}")
+    print(f"Evaluating refined mesh for scan{scene}", flush=True)
     cmd_eval = (
         f"python {script_dir_2dgs}/eval_dtu/evaluate_single_scene.py "
         f"--input_mesh {ply_file} "
@@ -33,5 +33,5 @@ for scene in dtu_scenes:
         f"--mask_dir {args.dtu} "
         f"--DTU {args.DTU_Official}"
     )
-    print(cmd_eval)
+    print(cmd_eval, flush=True)
     os.system(cmd_eval)

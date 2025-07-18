@@ -83,6 +83,9 @@ if __name__ == "__main__":
     parser.add_argument('--gpu', type=int, default=0, help='Index of GPU device to use.')
     parser.add_argument('--white_background', type=str2bool, default=False, help='Use a white background instead of black.')
 
+    # PORT
+    parser.add_argument('--port', type=int, default=6009)
+
     # Parse arguments
     args = parser.parse_args()
     if args.low_poly:
@@ -124,7 +127,8 @@ if __name__ == "__main__":
                 -m {gs_checkpoint_dir} \
                 -r 2 \
                 {white_background_str}\
-                --iterations 7_000"
+                --iterations 7_000 \
+                --port {args.port}"
         )
     else:
         print("A vanilla 3DGS checkpoint was provided. Skipping the vanilla 3DGS optimization.")
