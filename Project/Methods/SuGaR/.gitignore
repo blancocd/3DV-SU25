@@ -12,6 +12,7 @@ test_environment.yml
 blender/dev_mode.py
 tmp*
 
+eval/
 # To remove
 frosting*
 extract_shell.py
