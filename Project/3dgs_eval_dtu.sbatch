@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=sugar-eval-dtu
+#SBATCH --job-name=3dgs-eval-dtu
 #SBATCH --cpus-per-task=4
 #SBATCH --partition=day
 #SBATCH --mem-per-cpu=6G
@@ -15,5 +15,5 @@ echo "Finished activating environment"
 which python
 
 cd $3DV_DIR/Project/Methods/SuGaR/
-python eval_dtu_w_2dgs_struct.py    --dtu $3DV_DATADIR/DTU_2DGS \
-                                    --DTU_Official $3DV_DATADIR/DTU
+python eval_3dgs_dtu_w_2dgs_struct.py   --dtu $3DV_DATADIR/DTU_2DGS \
+                                        --DTU_Official $3DV_DATADIR/DTU

@@ -5,10 +5,8 @@
 #SBATCH --mem-per-cpu=24G
 #SBATCH --gres=gpu:2080ti:1
 #SBATCH --time=05:00:00
-#SBATCH --error=/home/stud213/3DV-SU25/Project/slurm/%J.err
-#SBATCH --output=/home/stud213/3DV-SU25/Project/slurm/%J.out
-#SBATCH --mail-type=ALL
-#SBATCH --mail-user=cesar.diaz-blanco@student.uni-tuebingen.de
+#SBATCH --error=$3DV_DIR/Project/slurm/%J.err
+#SBATCH --output=$3DV_DIR/Project/slurm/%J.out
 
 # Activate conda and the respective environment
 source ~/miniconda3/bin/activate
@@ -16,6 +14,6 @@ conda activate tnt_eval
 echo "Finished activating environment"
 which python
 
-cd /home/stud213/3DV-SU25/Project/Methods/SuGaR/
-python eval_tnt_w_2dgs_struct.py    --TNT_data /home/stud213/Datasets/TNT_GOF/TrainingSet \
-                                    --TNT_GT /home/stud213/Datasets/TNT
+cd $3DV_DIR/Project/Methods/SuGaR/
+python eval_tnt_w_2dgs_struct.py    --TNT_data $3DV_DATADIR/TNT_GOF/TrainingSet \
+                                    --TNT_GT $3DV_DATADIR/TNT
